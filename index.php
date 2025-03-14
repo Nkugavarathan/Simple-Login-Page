@@ -30,6 +30,8 @@
         </div>
     </div>
     <?php
+
+    include("database.php");
     include("footer.php"); ?>
 
 </body>
