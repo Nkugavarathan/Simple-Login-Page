@@ -12,7 +12,35 @@
 
 <body>
 
-    <?php include("header.php"); ?>
+    <?php include("header.php");
+
+    $first_name = "";
+    $last_name = "";
+    $email = "";
+    $phone = "";
+    $address = "";
+
+    // error msg
+    $first_name_error = "";
+    $last_name_error = "";
+    $email_error = "";
+    $phone_error = "";
+    $address_error = "";
+    $password_error = "";
+    $confirm_password_error = "";
+
+    $error = false;
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $first_name = $_POST["first_name"];
+        $last_name = $_POST["last_name"];
+        $email = $_POST["email"];
+        $phone = $_POST["phone"];
+        $address = $_POST["address"];
+        $password = $_POST["password"];
+        $confirm_password = $_POST["confirm_password"];
+    }
+    ?>
 
     <div class="container py-4">
         <div class="row">
@@ -23,57 +51,58 @@
                     <div class="row mb-3">
                         <label for="" class="col-sm-4 col-form-label">First Name*</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="first_name" value="">
-                            <span class="text-danger"></span>
+                            <!-- PHP's <?= $first_name ?> is shorthand for <?php echo $first_name; ?>. It outputs the value of the $first_name variable into the 
+                             value attribute of the input field.
+                           
+                             When a user submits the form, the value they enter for "First Name" is stored in the $first_name variable (via $_POST["first_name"]).
+
+If the form is reloaded (e.g., due to validation errors or another reason), this allows the previously entered value to persist, so the user doesn't need to re-enter it. 
+                            -->
+                            <input type="text" class="form-control" name="first_name" value="<?= $first_name ?>">
+                            <span class="text-danger"> <?= $first_name_error ?> </span>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label for="" class="col-sm-4 col-form-label">First Name*</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" name="first_name" value="">
-                            <span class="text-danger"></span>
-                        </div>
-                    </div>
+
                     <div class="row mb-3">
                         <label for="" class="col-sm-4 col-form-label">Last Name*</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="last_name" value="">
-                            <span class="text-danger"></span>
+                            <input type="text" class="form-control" name="last_name" value="<?= $last_name ?>">
+                            <span class="text-danger"> <?= $last_name_error ?></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="" class="col-sm-4 col-form-label">Email*</label>
                         <div class="col-sm-8">
-                            <input type="email" class="form-control" name="email" value="">
-                            <span class="text-danger"></span>
+                            <input type="email" class="form-control" name="email" value="<?= $email ?>">
+                            <span class="text-danger"> <?= $email_error ?></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="" class="col-sm-4 col-form-label">Phone*</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="phone" value="">
-                            <span class="text-danger"></span>
+                            <input type="text" class="form-control" name="phone" value="<?= $phone ?>">
+                            <span class="text-danger"> <?= $phone_error ?></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="" class="col-sm-4 col-form-label">Address</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="address" value="">
-                            <span class="text-danger"></span>
+                            <input type="text" class="form-control" name="address" value="<?= $address ?>">
+                            <span class="text-danger"> <?= $address_error ?></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="" class="col-sm-4 col-form-label">Password*</label>
                         <div class="col-sm-8">
                             <input type="password" class="form-control" name="password" value="">
-                            <span class="text-danger"></span>
+                            <span class="text-danger"> <?= $password_error ?></span>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label for="" class="col-sm-4 col-form-label">Confirm Password*</label>
                         <div class="col-sm-8">
                             <input type="password" class="form-control" name="confirm_password" value="">
-                            <span class="text-danger"></span>
+                            <span class="text-danger"><?= $confirm_password_error ?></span>
                         </div>
                     </div>
                     <div class="row mb-3">
