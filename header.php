@@ -29,7 +29,7 @@
                     <a href="./register.php" class="btn btn-outline-primary me-2">Register</a>
                 </li>
                 <li class="nav-item">
-                    <a href="./login.php" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="./login.php" class="btn btn-primary me-2">Login</a>
                 </li>
             </ul>
         </div>

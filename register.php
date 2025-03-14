@@ -31,6 +31,8 @@
 
     $error = false;
 
+    $success_message = "";
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $first_name = $_POST["first_name"];
         $last_name = $_POST["last_name"];
@@ -39,6 +41,44 @@
         $address = $_POST["address"];
         $password = $_POST["password"];
         $confirm_password = $_POST["confirm_password"];
+
+        //validate firstname
+        // if (empty($first_name)) {
+        //     $first_name_error = "First Name is requird";
+        //     $error = true;
+        // }
+        if (empty($first_name)) {
+            $first_name_error = "First Name is required";
+        } else {
+            $success_message = "First Name entered successfully!"; // Set success message
+        }
+        //validate lastname
+        if (empty($last_name)) {
+            $last_name_error = "Last Name is requird";
+            $error = true;
+        }
+        //email format
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $email_error = "Email format is not valid";
+            $error = true;
+        }
+        // validate phone
+        // define a regex for phone format
+
+        if (!preg_match("/^(\+?\d{1,3})?[-.\s]?\d{7,12}$/", $phone)) {
+            $phone_error = "Phone format is not valid";
+            $error = true;
+        }
+
+        //validate password
+        if (strlen($password) < 6) {
+            $password_error = "Password must have at least 6 charactors";
+            $error = true;
+        }
+        if ($confirm_password != $password) {
+            $confirm_password_error = "Password and Confirm password do not match";
+            $error = true;
+        }
     }
     ?>
 
@@ -60,10 +100,11 @@ If the form is reloaded (e.g., due to validation errors or another reason), this
                             -->
                             <input type="text" class="form-control" name="first_name" value="<?= $first_name ?>">
                             <span class="text-danger"> <?= $first_name_error ?> </span>
+                            <span class="text-success" style="color:green"> <?= $success_message ?> </span>
                         </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class=" row mb-3">
                         <label for="" class="col-sm-4 col-form-label">Last Name*</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" name="last_name" value="<?= $last_name ?>">
