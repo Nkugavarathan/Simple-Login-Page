@@ -9,5 +9,7 @@ $connection = new mysqli($servername, $username, $password, $dbname);
 if ($connection) {
     echo "db connected successfully";
 } else {
-    echo "Error" . $connection->connect_error;
+    die("Error" . $connection->connect_error);
 }
+
+// table name login

@@ -62,6 +62,24 @@
             $email_error = "Email format is not valid";
             $error = true;
         }
+
+        include("database.php");
+        $statement = $connection->prepare("SELECT id FROM login WHERE email=? ");
+        // This prepares an SQL query to fetch the `id` from the `login` table where the `email` matches a provided value. 
+        // Using prepared statements enhances security by preventing SQL injection attacks.
+
+        $statement->bind_param("s", $email);
+        // This binds the variable `$email` (assumed to contain the email value to search for) to the SQL query as a string parameter ("s").
+
+        $statement->execute();
+        // This executes the prepared statement to perform the query on the database.
+
+        $statement->store_result();
+        if ($statement->num_rows > 0) {
+            $email_error = "Email is already used";
+            $error = true;
+        }
+
         // validate phone
         // define a regex for phone format
 
@@ -79,6 +97,23 @@
             $confirm_password_error = "Password and Confirm password do not match";
             $error = true;
         }
+    }
+
+    if (!$error) {
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        $create_at = date('Y-m-d H:i:s');
+
+        $stmt->$connection->prepare("INSERT INTO login (first_name,last_name,email,phone,address,password,role,created_at)
+        VALUES(?,?,?,?,?,?,?);
+        ");
+        $stmt->bind_param("sssssss", $first_name, $last_name, $email, $phone, $address, $password, $create_at);
+        $stmt->execute();
+
+        //read id for created user
+        $insert_id = $stmt->insert_id;
+
+
+        $stmt->close();
     }
     ?>
 

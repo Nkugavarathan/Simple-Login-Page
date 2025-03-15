@@ -13,9 +13,9 @@
     <?php
     include("header.php"); ?>
 
-    <div style="background-color:#08618d">
-        <div class="container text-white py-5">
-            <div class="row align-items-center g-4">
+    <div style="background-color:#08618d; height: 100vh; overflow: hidden;">
+        <div class="container text-white">
+            <div class="row align-items-center g-4 h-100">
                 <div class="col-md-6">
                     <h1 class="mb-4 display-2"><strong>Best Shop of Electronics</strong></h1>
                     <p>
@@ -23,15 +23,16 @@
                     </p>
                 </div>
                 <div class="col-md-6 text-center">
-                    dfd
-                    <img src="" alt="" class="img-fluid" alt="img">
+                    <img src="./photos/iphone.JPG" alt="Hero Section Image" class="img-fluid"
+                        style="max-height: 100vh; max-width: 100%; object-fit: contain;">
                 </div>
             </div>
         </div>
     </div>
+
     <?php
 
-    include("database.php");
+    // include("database.php");  24:26
     include("footer.php"); ?>
 
 </body>
