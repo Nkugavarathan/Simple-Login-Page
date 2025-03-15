@@ -30,7 +30,7 @@
 
             $statement->execute();
 
-            $statement->bind_result($id, $first_name, $last_name, $phone, $stored_password, $created_at);
+            $statement->bind_result($id, $first_name, $last_name, $phone, $address, $stored_password, $created_at);
 
             if ($statement->fetch()) {
                 if (password_verify($password, $stored_password)) {
@@ -40,12 +40,15 @@
                     $_SESSION["last_name"] = $last_name;
                     $_SESSION["email"] = $email;
                     $_SESSION["phone"] = $phone;
+                    $_SESSION["address"] = $address;
                     $_SESSION["created_at"] = $created_at;
 
                     header("Location:index.php");
                     exit;
                 }
             }
+            $statement->close();
+            $error = "Email or Password invalid";
         }
     }
     ?>
