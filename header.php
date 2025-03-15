@@ -20,11 +20,11 @@ $authenticated = isset($_SESSION["email"]);
             </ul>
 
             <ul class="navbar-nav">
-                <li class="nav-item dropdown me-2">
+                <li class="nav-item dropdown me-5">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Admin
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="./profile.php">Profile</a></li>
                         <li><a class="dropdown-item" href="./logout.php">Logout</a></li>
                     </ul>

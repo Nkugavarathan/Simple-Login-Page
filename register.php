@@ -100,7 +100,10 @@
 
 
         if (!$error) {
-            $password = password_hash($password, PASSWORD_DEFAULT);
+
+            // $password = password_hash($password, PASSWORD_DEFAULT);
+            date_default_timezone_set("Asia/Colombo");
+
             $created_at = date('Y-m-d H:i:s');
 
             // Prepare the SQL statement

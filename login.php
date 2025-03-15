@@ -1,13 +1,14 @@
 <?php
-// Start the session at the beginning
+
+include("header.php");
+include("database.php");
+
 if (isset($_SESSION["email"])) {
-    header("Location:index.php");
+    header("Location: index.php");
     exit;
 }
 
 
-include("header.php");
-include("database.php");
 
 $email = "";
 $error = "";
@@ -22,10 +23,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $statement = $connection->prepare("SELECT id, first_name, last_name, phone, address, password, created_at FROM login WHERE email=?");
         $statement->bind_param("s", $email);
         $statement->execute();
-        $statement->bind_result($id, $first_name, $last_name, $phone, $address, $stored_password, $created_at);
+        $statement->store_result();
 
-        if ($statement->fetch()) {
-            if (password_verify($password, $stored_password)) {
+        if ($statement->num_rows > 0) {
+            $statement->bind_result($id, $first_name, $last_name, $phone, $address, $stored_password, $created_at);
+            $statement->fetch();
+
+
+            if ($password === $stored_password) {
+                // Save session data
                 $_SESSION["id"] = $id;
                 $_SESSION["first_name"] = $first_name;
                 $_SESSION["last_name"] = $last_name;
@@ -34,14 +40,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["address"] = $address;
                 $_SESSION["created_at"] = $created_at;
 
+                // Redirect to home 
                 header("Location: index.php");
                 exit;
+            } else {
+                $error = "Password is incorrect";
             }
+        } else {
+            $error = "Email not found";
         }
         $statement->close();
-        $error = "Email or Password invalid";
     }
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +96,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </form>
         </div>
-
     </div>
     <?php include("footer.php") ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
