@@ -12,7 +12,14 @@
 
 <body>
 
-    <?php include("header.php");
+    <?php
+
+    include("header.php");
+
+    include("database.php");
+
+
+
 
     $first_name = "";
     $last_name = "";
@@ -63,7 +70,7 @@
             $error = true;
         }
 
-        include("database.php");
+
         $statement = $connection->prepare("SELECT id FROM login WHERE email=? ");
         // This prepares an SQL query to fetch the `id` from the `login` table where the `email` matches a provided value. 
         // Using prepared statements enhances security by preventing SQL injection attacks.
@@ -74,6 +81,7 @@
         $statement->execute();
         // This executes the prepared statement to perform the query on the database.
 
+        //check email is already use or not
         $statement->store_result();
         if ($statement->num_rows > 0) {
             $email_error = "Email is already used";
@@ -101,19 +109,45 @@
 
     if (!$error) {
         $password = password_hash($password, PASSWORD_DEFAULT);
-        $create_at = date('Y-m-d H:i:s');
+        $created_at = date('Y-m-d H:i:s');
 
-        $stmt->$connection->prepare("INSERT INTO login (first_name,last_name,email,phone,address,password,role,created_at)
-        VALUES(?,?,?,?,?,?,?);
-        ");
-        $stmt->bind_param("sssssss", $first_name, $last_name, $email, $phone, $address, $password, $create_at);
+        // Prepare the SQL statement
+        $stmt = $connection->prepare("INSERT INTO login (first_name, last_name, email, phone, address, password, created_at)
+VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+        // Bind parameters
+        $stmt->bind_param("sssssss", $first_name, $last_name, $email, $phone, $address, $password, $created_at);
+
+        // Execute the prepared statement
         $stmt->execute();
 
-        //read id for created user
+        // Get the ID of the inserted row
         $insert_id = $stmt->insert_id;
 
-
+        // Close the statement to free resources
         $stmt->close();
+
+
+        // save session data
+
+        $_SESSION["id"] = $insert_id;
+        $_SESSION["first_name"] = $first_name;
+        $_SESSION["last_name"] = $last_name;
+        $_SESSION["email"] = $email;
+        $_SESSION["address"] = $address;
+        $_SESSION["created_at"] = $created_at;
+
+
+        // redirect to home 
+
+        session_start(); // Resumes or initializes a session
+
+        if (isset($_SESSION["email"])) {
+            header("Location: index.php");
+            exit;
+        }
+        // header("Location:index.php");
+
     }
     ?>
 

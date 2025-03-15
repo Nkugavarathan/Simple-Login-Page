@@ -1,3 +1,15 @@
+<?php
+// Intialize session
+
+session_start();
+
+$authenticated = false;
+
+if (isset($_SESSION["email"])) {
+    $authenticated = true;
+}
+?>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom shadow-sm">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Navbar</a>
@@ -19,7 +31,7 @@
                         <a class="dropdown-item" href="./profile.php">Profile</a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="./logout.php">Logout</a>
+                        <a class="dropdown-item" href="./index.php">Logout</a>
                     </li>
                 </ul>
             </li>
