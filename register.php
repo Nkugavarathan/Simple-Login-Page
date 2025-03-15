@@ -13,31 +13,24 @@
 <body>
 
     <?php
-
+    // session_start(); // Start the session at the beginning
+    // if (isset($_SESSION["email"])) {
+    //     header("Location: index.php");
+    //     exit;
+    // } already sessio_start() avilable in header.php starting 
     include("header.php");
 
     include("database.php");
 
+    if (isset($_SESSION["email"])) {
+        header("Location: index.php");
+        exit;
+    }
 
 
-
-    $first_name = "";
-    $last_name = "";
-    $email = "";
-    $phone = "";
-    $address = "";
-
-    // error msg
-    $first_name_error = "";
-    $last_name_error = "";
-    $email_error = "";
-    $phone_error = "";
-    $address_error = "";
-    $password_error = "";
-    $confirm_password_error = "";
-
+    $first_name = $last_name = $email = $phone = $address = "";
+    $first_name_error = $last_name_error = $email_error = $phone_error = $address_error = $password_error = $confirm_password_error = "";
     $error = false;
-
     $success_message = "";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -69,7 +62,6 @@
             $email_error = "Email format is not valid";
             $error = true;
         }
-
 
         $statement = $connection->prepare("SELECT id FROM login WHERE email=? ");
         // This prepares an SQL query to fetch the `id` from the `login` table where the `email` matches a provided value. 
@@ -105,49 +97,44 @@
             $confirm_password_error = "Password and Confirm password do not match";
             $error = true;
         }
-    }
 
-    if (!$error) {
-        $password = password_hash($password, PASSWORD_DEFAULT);
-        $created_at = date('Y-m-d H:i:s');
 
-        // Prepare the SQL statement
-        $stmt = $connection->prepare("INSERT INTO login (first_name, last_name, email, phone, address, password, created_at)
+        if (!$error) {
+            $password = password_hash($password, PASSWORD_DEFAULT);
+            $created_at = date('Y-m-d H:i:s');
+
+            // Prepare the SQL statement
+            $stmt = $connection->prepare("INSERT INTO login (first_name, last_name, email, phone, address, password, created_at)
 VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-        // Bind parameters
-        $stmt->bind_param("sssssss", $first_name, $last_name, $email, $phone, $address, $password, $created_at);
+            // Bind parameters
+            $stmt->bind_param("sssssss", $first_name, $last_name, $email, $phone, $address, $password, $created_at);
 
-        // Execute the prepared statement
-        $stmt->execute();
+            // Execute the prepared statement
+            $stmt->execute();
 
-        // Get the ID of the inserted row
-        $insert_id = $stmt->insert_id;
+            // Get the ID of the inserted row
+            $insert_id = $stmt->insert_id;
 
-        // Close the statement to free resources
-        $stmt->close();
-
-
-        // save session data
-
-        $_SESSION["id"] = $insert_id;
-        $_SESSION["first_name"] = $first_name;
-        $_SESSION["last_name"] = $last_name;
-        $_SESSION["email"] = $email;
-        $_SESSION["address"] = $address;
-        $_SESSION["created_at"] = $created_at;
+            // Close the statement to free resources
+            $stmt->close();
 
 
-        // redirect to home 
+            // save session data
 
-        session_start(); // Resumes or initializes a session
+            $_SESSION["id"] = $insert_id;
+            $_SESSION["first_name"] = $first_name;
+            $_SESSION["last_name"] = $last_name;
+            $_SESSION["email"] = $email;
+            $_SESSION["phone"] = $phone;
+            $_SESSION["address"] = $address;
+            $_SESSION["created_at"] = $created_at;
 
-        if (isset($_SESSION["email"])) {
-            header("Location: index.php");
+
+            // redirect to home 
+            header("Location:index.php");
             exit;
         }
-        // header("Location:index.php");
-
     }
     ?>
 
@@ -156,7 +143,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?)");
             <div class="col-lg-6 mx-auto border shadow p-4">
                 <h2 class="text-center mb-3">Register Here</h2>
 
-                <form action="<?php $_PHP_SELF ?>" method="post">
+                <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
                     <div class="row mb-3">
                         <label for="" class="col-sm-4 col-form-label">First Name*</label>
                         <div class="col-sm-8">
